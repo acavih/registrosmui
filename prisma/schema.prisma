@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  password String
+}
+
+model Partner {
+  id              String        @id @default(uuid())
+  code            String
+  name            String
+  surname         String
+  email           String
+  phone           String
+  notes           String
+  sipcard         String
+  birthdate       DateTime
+  pendent         String
+  sex             Sex           @relation(fields: [sexId], references: [id])
+  partnerState    PartnerState  @relation(fields: [partnerStateId], references: [id])
+  nationality     Nationality   @relation(fields: [nationalityId], references: [id])
+  residency       Residency     @relation(fields: [residencyId], references: [id])
+  howDidKnowus    HowDidKnowus  @relation(fields: [howDidKnowusId], references: [id])
+  yearDidKnowUs   YearDidKnowus @relation(fields: [yearDidKnowusId], references: [id])
+  sexId           String
+  partnerStateId  String
+  nationalityId   String
+  residencyId     String
+  howDidKnowusId  String
+  yearDidKnowusId String
+}
+
+model Sex {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Partner Partner[]
+}
+
+model PartnerState {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Partner Partner[]
+}
+
+model Nationality {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Partner Partner[]
+}
+
+model Residency {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Partner Partner[]
+}
+
+model HowDidKnowus {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Partner Partner[]
+}
+
+model YearDidKnowus {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Partner Partner[]
+}

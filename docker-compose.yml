@@ -1,0 +1,35 @@
+version: 'versions: [ "3.9" ]'
+
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "5000:3306"
+    env_file:
+      - .env
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    env_file:
+      - .env
+    ports:
+      - "8080:80"
+    links:
+      - mysql
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
+      - PMA_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
