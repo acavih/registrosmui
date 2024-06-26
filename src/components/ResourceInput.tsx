@@ -4,22 +4,26 @@ import { useEffect } from "react"
 
 type ResourceProps = {
     resourceName: string
-    multiple?: boolean
+    multiple?: boolean,
+    initialValue?: string
     onChange: (value: string) => void
 }
 
-export default function ResourceInput({multiple = false, resourceName, onChange}: ResourceProps) {
-    const {data: resources = []} = trpcClient.resources.get.useQuery<any[]>({name: resourceName as any})
+export default function ResourceInput({multiple = false, resourceName, onChange, initialValue, ...other}: ResourceProps) {
+    const {data: resources = [], isLoading} = trpcClient.resources.get.useQuery<any[]>({name: resourceName as any})
 
+    if (isLoading) {
+        return (<></>)
+    }
     return (
         <Autocomplete
             multiple={multiple} options={resources}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (<TextField {...params} label={resourceName} />)}
-
+            defaultValue={resources.find((resource) => resource.name === initialValue)}
             onChange={(_, value: any) => {
                 //alert(value.id)
-                onChange(value.id)
+                onChange(value.name)
             }}
         />
     )

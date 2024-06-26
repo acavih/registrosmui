@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddPartnerButton from "./AddPartnerButton";
 
+
 export function PartnersPage({partners, searchQuery}) {
     const router = useRouter()
     const [search, setSearch] = useState(searchQuery)

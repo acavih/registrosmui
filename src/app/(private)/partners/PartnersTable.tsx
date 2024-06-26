@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 
 import { ArrowDropDown as DownIcon, ArrowDropUp as UpIcon, Circle, ReportProblem } from '@mui/icons-material'
 import { wrap } from 'module';
+import { useRouter } from 'next/navigation';
 
 export default function PartnersTable({partners}) {
   return (
@@ -36,6 +37,7 @@ export default function PartnersTable({partners}) {
 
 function PartnerRow({row}) {
     const [showAditionalRow, setShowAditionalRow] = React.useState(false)
+    const router = useRouter()
 
     const invisible = row.notes.length === 0 && row.pendent.length === 0
 
@@ -58,8 +60,11 @@ function PartnerRow({row}) {
                 <TableCell scope="row">{row.sex}</TableCell>
                 <TableCell scope="row" align='right'>
                     <Stack justifyContent={'flex-end'} direction='row' spacing={2}>
-                        <Button disableElevation size='small' variant="contained">Editar</Button>
-                        <Button disableElevation size='small' variant="contained">Ver socio</Button>
+                        <Button disableElevation size='small' variant="contained"
+                            onClick={() => router.push(`/partners/${row.id}`)}
+                        >
+                            Ver socio
+                        </Button>
                     </Stack>
                 </TableCell>
             </TableRow>
