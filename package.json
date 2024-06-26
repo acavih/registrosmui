@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "start:dev": "npm run git:update && docker-compose build --no-cache && docker-compose up --force-recreate && docker system prune",
+    "git:update": "git fetch origin && git pull origin master && npm install",
+    "updateDB": "prisma format && prisma generate && prisma db push",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "updateDB": "prisma format && prisma generate && prisma db push"
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -24,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.11",
     "next": "14.2.4",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",

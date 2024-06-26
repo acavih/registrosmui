@@ -1,6 +1,7 @@
 "use client"
-import { trpcClient } from "@/app/_trpc/client";
 import { Card, CardContent, Grid, TextField, Button, CardActions, CardHeader } from "@mui/material";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
@@ -9,26 +10,28 @@ type Inputs = {
 }
 
 export default function LoginForm() {
-    const loginApi = trpcClient.Login.login.useMutation({
-        onSuccess: (data) => {
-            console.dir(data)
-        }
-    })
-
+    const router = useRouter()
     const {
         register,
         handleSubmit,
     } = useForm<Inputs>()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        loginApi.mutate({
-            username: data.username,
-            password: data.password
-        })
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        try {
+            await signIn("credentials", {
+                username: data.username.trim(),
+                password: data.password.trim(),
+                redirect: false
+            })
+            router.refresh()
+        } catch (error) {
+            console.log(error)
+            console.log('error autenticandose')
+        }
     }
     
     return (
-        <Card component={'form'} onSubmit={handleSubmit(onSubmit)}>
+        <Card component={'form'} method="post" onSubmit={handleSubmit(onSubmit)}>
             <CardHeader title="Acceso a la aplicacion sds" />
             <CardContent>
                 <Grid container spacing={2}>

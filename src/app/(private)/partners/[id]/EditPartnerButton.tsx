@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { trpcClient } from '@/app/_trpc/client';
 import { useRouter } from 'next/navigation';
 import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 type Inputs = {
     code: string
@@ -112,9 +113,9 @@ export default function EditPartnerButton({ partner }) {
                             <TextField {...register("sipcard")} label="sipcard" />
                         </Grid>
                         <Grid item xs={12}>
-                            <DatePicker 
-                                value={partner.birthdate}
-                                onChange={(v) => setValue("birthdate", v!)}
+                            <DatePicker
+                                value={dayjs(partner.birthdate)}
+                                onChange={(v) => setValue("birthdate", dayjs(v).toDate().toISOString())}
                             label="birthdate" />
                         </Grid>
                         <Grid item xs={12}>

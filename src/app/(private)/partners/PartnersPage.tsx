@@ -5,11 +5,13 @@ import PartnersTable from "./PartnersTable";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddPartnerButton from "./AddPartnerButton";
+import { signOut, useSession } from "next-auth/react";
 
 
 export function PartnersPage({partners, searchQuery}) {
     const router = useRouter()
     const [search, setSearch] = useState(searchQuery)
+    const session = useSession()
 
     useEffect(() => {
         router.push(`/partners?search=${search}`)
