@@ -43,40 +43,54 @@ model Partner {
   residencyId     String
   howDidKnowusId  String
   yearDidKnowusId String
+
+  @@map("partners")
 }
 
 model Sex {
   id      String    @id @default(uuid())
   name    String    @unique
   Partner Partner[]
+
+  @@map("resources_sex")
 }
 
 model PartnerState {
   id      String    @id @default(uuid())
   name    String    @unique
   Partner Partner[]
+
+  @@map("resources_partnerstates")
 }
 
 model Nationality {
   id      String    @id @default(uuid())
   name    String    @unique
   Partner Partner[]
+
+  @@map("resources_nationalities")
 }
 
 model Residency {
   id      String    @id @default(uuid())
   name    String    @unique
   Partner Partner[]
+
+  @@map("resources_residencies")
 }
 
 model HowDidKnowus {
   id      String    @id @default(uuid())
   name    String    @unique
   Partner Partner[]
+
+  @@map("resources_howdidknowus")
 }
 
 model YearDidKnowus {
   id      String    @id @default(uuid())
   name    String    @unique
   Partner Partner[]
+
+  @@map("resources_yeardidknowus")
 }

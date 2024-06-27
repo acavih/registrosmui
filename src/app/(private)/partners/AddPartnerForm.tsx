@@ -79,22 +79,22 @@ export default function AddPartnerForm({close}) {
                         <TextField {...register("pendent")} multiline label="pendent"/>
                     </Grid>
                     <Grid item xs={12}>
-                        <ResourceInput resourceName="Sex" onChange={(v) => setValue("sex", v)} />
+                        <ResourceInput resourceName="sex" onChange={(v) => setValue("sex", v)} />
                     </Grid>
                     <Grid item xs={12}>
-                        <ResourceInput resourceName="Nationality" onChange={(v) => setValue("nationality", v)} />
+                        <ResourceInput resourceName="nationalities" onChange={(v) => setValue("nationality", v)} />
                     </Grid>
                     <Grid item xs={12}>
-                        <ResourceInput resourceName="Residency" onChange={(v) => setValue("residency", v)} />
+                        <ResourceInput resourceName="residencies" onChange={(v) => setValue("residency", v)} />
                     </Grid>
                     <Grid item xs={12}>
-                        <ResourceInput resourceName="PartnerState" onChange={(v) => setValue("partnerState", v)} />
+                        <ResourceInput resourceName="partnerstates" onChange={(v) => setValue("partnerState", v)} />
                     </Grid>
                     <Grid item xs={12}>
-                        <ResourceInput resourceName="HowDidKnowus" onChange={(v) => setValue("howDidKnowus", v)} />
+                        <ResourceInput resourceName="howdidknowus" onChange={(v) => setValue("howDidKnowus", v)} />
                     </Grid>
                     <Grid item xs={12}>
-                        <ResourceInput resourceName="YearDidKnowus" onChange={(v) => setValue("yearDidKnowUs", v)} />
+                        <ResourceInput resourceName="yeardidknowus" onChange={(v) => setValue("yearDidKnowUs", v)} />
                     </Grid>
                 </Grid>
             </CardContent>

@@ -5,11 +5,13 @@ import {z} from "zod";
 export const ResourcesRouter = router({
     get: privateProcedure.input(
         z.object({
-            name: z.enum(['Sex', 'Nationality', 'Residency', 'PartnerState', 'HowDidKnowus', 'YearDidKnowus'])
+            name: z.enum(
+                ['sex', 'nationalities', 'residencies', 'partnerstates', 'howdidknowus', 'yeardidknowus']
+            )
         })
     ).query(async ({ input }) => {
         try {
-            const resources = await prismaClient.$queryRawUnsafe(`SELECT * FROM ${input.name}`)
+            const resources = await prismaClient.$queryRawUnsafe(`SELECT * FROM resources_${input.name}`)
             return resources
         } catch (error) {
             console.log(error)

@@ -115,7 +115,7 @@ export default function EditPartnerButton({ partner }) {
                         <Grid item xs={12}>
                             <DatePicker
                                 value={dayjs(partner.birthdate)}
-                                onChange={(v) => setValue("birthdate", dayjs(v).toDate().toISOString())}
+                                onChange={(v) => setValue("birthdate", dayjs(v).format('YYYY/MM/DD'))}
                             label="birthdate" />
                         </Grid>
                         <Grid item xs={12}>
@@ -125,22 +125,22 @@ export default function EditPartnerButton({ partner }) {
                             <TextField {...register("pendent")} multiline label="pendent" />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="Sex" onChange={(v) => setValue("sex", v)} initialValue={partner.sex.name} />
+                            <ResourceInput resourceName="sex" onChange={(v) => setValue("sex", v)} initialValue={partner.sex.name} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="Nationality" onChange={(v) => setValue("nationality", v)} initialValue={partner.nationality.name} />
+                            <ResourceInput resourceName="nationalities" onChange={(v) => setValue("nationality", v)} initialValue={partner.nationality.name} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="Residency" onChange={(v) => setValue("residency", v)} initialValue={partner.residency.name} />
+                            <ResourceInput resourceName="residencies" onChange={(v) => setValue("residency", v)} initialValue={partner.residency.name} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="PartnerState" onChange={(v) => setValue("partnerState", v)} initialValue={partner.partnerState.name} />
+                            <ResourceInput resourceName="partnerstates" onChange={(v) => setValue("partnerState", v)} initialValue={partner.partnerState.name} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="HowDidKnowus" onChange={(v) => setValue("howDidKnowus", v)} initialValue={partner.howDidKnowus.name} />
+                            <ResourceInput resourceName="howdidknowus" onChange={(v) => setValue("howDidKnowus", v)} initialValue={partner.howDidKnowus.name} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="YearDidKnowus" onChange={(v) => setValue("yearDidKnowUs", v)} initialValue={partner.yearDidKnowUs.name} />
+                            <ResourceInput resourceName="yeardidknowus" onChange={(v) => setValue("yearDidKnowUs", v)} initialValue={partner.yearDidKnowUs.name} />
                         </Grid>
                     </Grid>
                 </DialogContent>
