@@ -17,5 +17,34 @@ export const ResourcesRouter = router({
             console.log(error)
             throw error
         }
+    }),
+    create: privateProcedure.input(
+        z.object({
+            name: z.string(),
+            value: z.string()
+        })
+    ).mutation(async ({ input }) => {
+        try {
+            const resource = await prismaClient.$queryRawUnsafe(`INSERT INTO resources_${input.name} (id, name) VALUES (uuid(), '${input.value}')`)
+            return resource
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }),
+    update: privateProcedure.input(
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            value: z.string()
+        })
+    ).mutation(async ({ input }) => {
+        try {
+            const resource = await prismaClient.$queryRawUnsafe(`UPDATE resources_${input.name} SET name = '${input.value}' WHERE id = '${input.id}'`)
+            return resource
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
     })
 })

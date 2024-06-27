@@ -43,6 +43,7 @@ model Partner {
   residencyId     String
   howDidKnowusId  String
   yearDidKnowusId String
+  Attention       Attention[]
 
   @@map("partners")
 }
@@ -93,4 +94,89 @@ model YearDidKnowus {
   Partner Partner[]
 
   @@map("resources_yeardidknowus")
+}
+
+model Attention {
+  id                String              @id @default(uuid())
+  note              String
+  date              DateTime
+  pendent           DateTime
+  partner           Partner             @relation(fields: [partnerId], references: [id])
+  archived          Boolean             @default(false)
+  partnerId         String
+  TypeAttentions    TypeAttentions[]
+  Projects          Projects[]
+  AttentionsReasons AttentionsReasons[]
+  DerivedTo         DerivedTo[]
+  DerivedFrom       DerivedFrom[]
+  Formation         Formation[]
+  Volunteer         Volunteer[]
+  PlaceAttention    PlaceAttention?     @relation(fields: [placeAttentionId], references: [id])
+  placeAttentionId  String?
+
+  @@map("attentions")
+}
+
+model PlaceAttention {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_placeattentions")
+}
+
+model TypeAttentions {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_typeattentions")
+}
+
+model Projects {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_projects")
+}
+
+model AttentionsReasons {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_attentionsreasons")
+}
+
+model DerivedTo {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_derivedto")
+}
+
+model DerivedFrom {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_derivedfrom")
+}
+
+model Formation {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_formation")
+}
+
+model Volunteer {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  Attention Attention[]
+
+  @@map("resources_volunteer")
 }

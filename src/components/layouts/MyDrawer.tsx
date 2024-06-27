@@ -34,6 +34,11 @@ export default function MyDrawer({open}) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
+                        <ListItemButton component={Link} href="/resources" selected={path.includes("resources")}>
+                            <ListItemText primary="Recursos" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
                         <ListItemButton component={Link} href="/partners" >
                             <ListItemText primary="Estadísticas" />
                         </ListItemButton>

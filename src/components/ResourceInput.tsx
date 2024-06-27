@@ -12,11 +12,9 @@ type ResourceProps = {
 export default function ResourceInput({multiple = false, resourceName, onChange, initialValue, ...other}: ResourceProps) {
     const {data: resources = [], isLoading} = trpcClient.resources.get.useQuery<any[]>({name: resourceName as any})
 
-    if (isLoading) {
-        return (<></>)
-    }
     return (
         <Autocomplete
+            loading={isLoading} disabled={isLoading}
             multiple={multiple} options={resources}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (<TextField {...params} label={resourceName} />)}
