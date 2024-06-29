@@ -12,6 +12,7 @@ import { trpcClient } from '@/app/_trpc/client';
 import { useRouter } from 'next/navigation';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { LoadingBackdrop } from '@/components/LoadingBackdrop';
 
 type Inputs = {
     code: string
@@ -84,6 +85,8 @@ export default function EditPartnerButton({ partner }) {
                 Editar socio
             </Button>
             <Dialog
+                fullWidth
+                maxWidth="xl"
                 open={open}
                 onClose={handleClose}
                 PaperProps={{
@@ -91,6 +94,7 @@ export default function EditPartnerButton({ partner }) {
                     onSubmit: handleSubmit(onSubmit),
                 }}
             >
+                <LoadingBackdrop active={updatePartner.isLoading} />
                 <DialogTitle>Editando socio {partner.name} {partner.surname}</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2}>
@@ -146,7 +150,7 @@ export default function EditPartnerButton({ partner }) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit" variant='contained'>Guardar socio</Button>
+                    <Button disabled={updatePartner.isLoading} type="submit" variant='contained'>Guardar socio</Button>
                 </DialogActions>
             </Dialog>
         </>

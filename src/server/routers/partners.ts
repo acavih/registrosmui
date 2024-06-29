@@ -56,6 +56,7 @@ export const partnersRouter = router({
     }),
     update: privateProcedure.input(partnerValidator).mutation(async ({ input }) => {
         try {
+            console.log(input.birthdate)
             const partner = await prismaClient.partner.update({
                 where: {
                     id: input.id

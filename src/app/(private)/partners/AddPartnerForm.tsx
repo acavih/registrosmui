@@ -1,11 +1,12 @@
 "use client"
 import { trpcClient } from "@/app/_trpc/client";
 import ResourceInput from "@/components/ResourceInput";
-import { Card, CardContent, Grid, TextField, Button, CardActions, CardHeader } from "@mui/material";
+import { Card, CardContent, Grid, TextField, Button, CardActions, CardHeader, Stack } from "@mui/material";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DatePicker } from '@mui/x-date-pickers';
+import { LoadingBackdrop } from "@/components/LoadingBackdrop";
 
 type Inputs = {
     code: string
@@ -49,7 +50,8 @@ export default function AddPartnerForm({close}) {
     }
 
     return (
-        <Card component={'form'} onSubmit={handleSubmit(onSubmit)}>
+        <Card sx={{ position: 'relative' }} component={'form'} elevation={0} onSubmit={handleSubmit(onSubmit)}>
+            <LoadingBackdrop active={addPartner.isLoading} />
             <CardHeader title="Añadir socio" />
             <CardContent>
                 <Grid container spacing={2}>
@@ -103,9 +105,9 @@ export default function AddPartnerForm({close}) {
                 </Grid>
             </CardContent>
             <CardActions>
-                <Grid item xs={12}>
-                    <Button type="submit" variant="contained">Añadir socio</Button>
-                </Grid>
+                <Stack direction="row" spacing={2} sx={{ width: '100%' }} justifyContent={'flex-end'}>
+                    <Button disabled={addPartner.isLoading} disableElevation type="submit" variant="contained">Añadir socio</Button>
+                </Stack>
             </CardActions>
         </Card>
     )

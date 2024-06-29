@@ -69,18 +69,18 @@ export default function PartnerPage({data, attentions, partnerId}) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Card variant="outlined">
+                {data.notes && <Card variant="outlined">
                     <CardHeader title="Observaciones" />
                     <CardContent>
                         <Typography variant="body1" color="initial">{data.notes}</Typography>
                     </CardContent>
-                </Card>
-                <Card variant="outlined">
+                </Card>}
+                {data.pendent && <Card variant="outlined">
                     <CardHeader title="Pendiente" />
                     <CardContent>
                         <Typography variant="body1" color="initial">{data.pendent}</Typography>
                     </CardContent>
-                </Card>
+                </Card>}
                 <AttentionsSection partnerId={partnerId} attentions={attentions} />
             </Stack>
         </Box>
