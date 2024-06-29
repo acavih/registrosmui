@@ -15,7 +15,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <MyAppBar toggleDrawer={() => setOpen(!open)} />
                 <Box component={"main"} sx={{ pl: open ? `calc(20px + ${drawerWidth}px)` : 0 }} >
                     <Toolbar />
-                    <Container maxWidth={false} sx={{ mt: 4, px: 2 }}>
+                    <Container maxWidth={false} sx={{ mt: 4, px: 2, mb: 20 }}>
                         {children}
                     </Container>
                 </Box>

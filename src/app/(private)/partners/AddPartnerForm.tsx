@@ -2,8 +2,10 @@
 import { trpcClient } from "@/app/_trpc/client";
 import ResourceInput from "@/components/ResourceInput";
 import { Card, CardContent, Grid, TextField, Button, CardActions, CardHeader } from "@mui/material";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { DatePicker } from '@mui/x-date-pickers';
 
 type Inputs = {
     code: string
@@ -70,7 +72,9 @@ export default function AddPartnerForm({close}) {
                         <TextField {...register("sipcard")} label="sipcard"/>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField {...register("birthdate")} label="birthdate"/>
+                        <DatePicker
+                            onChange={(v) => setValue("birthdate", dayjs(v).format('YYYY/MM/DD'))}
+                            label="birthdate" />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField {...register("notes")} multiline label="notes"/>

@@ -5,9 +5,10 @@ import {z} from "zod";
 export const ResourcesRouter = router({
     get: privateProcedure.input(
         z.object({
-            name: z.enum(
-                ['sex', 'nationalities', 'residencies', 'partnerstates', 'howdidknowus', 'yeardidknowus']
-            )
+            name: z.enum([
+                'sex', 'nationalities', 'residencies', 'partnerstates', 'howdidknowus', 'yeardidknowus',
+                'typeattentions', 'placeattentions'
+            ])
         })
     ).query(async ({ input }) => {
         try {

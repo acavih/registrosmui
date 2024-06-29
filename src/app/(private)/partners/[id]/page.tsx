@@ -8,7 +8,26 @@ export const metadata = {
 
 export default async function Page({params}) {
   const data = await retrievePartner(params.id);
-  return <PartnerPage {...{data}} />
+  const attentions = await prismaClient.attention.findMany({
+      where: {
+          partnerId: params.id
+      },
+      orderBy: {
+          date: 'desc'
+      },
+      include: {
+          TypeAttentions: true,
+          PlaceAttention: true,
+          Projects: true,
+          AttentionsReasons: true,
+          DerivedFrom: true,
+          DerivedTo: true,
+          Formation: true,
+          Volunteer: true
+      }
+  })
+  console.log('DATAAA', data)
+  return <PartnerPage {...{data, attentions}} partnerId={params.id} />
 }
 
 async function retrievePartner(id: string) {

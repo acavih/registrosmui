@@ -8,7 +8,7 @@ const partnerValidator = z.object({
     name: z.string(),
     surname: z.string(),
     code: z.string(),
-    birthdate: z.string(),
+    birthdate: z.string().optional(),
     email: z.string(),
     phone: z.string(),
     notes: z.string(),
@@ -39,7 +39,7 @@ export const partnersRouter = router({
                     name: input.name,
                     surname: input.surname,
                     code: input.code,
-                    birthdate: new Date(input.birthdate).toISOString(),
+                    birthdate: input.birthdate ? new Date(input.birthdate).toISOString() : null,
                     email: input.email,
                     phone: input.phone,
                     notes: input.notes,
@@ -55,7 +55,6 @@ export const partnersRouter = router({
         }
     }),
     update: privateProcedure.input(partnerValidator).mutation(async ({ input }) => {
-        console.log(input.birthdate, new Date(input.birthdate))
         try {
             const partner = await prismaClient.partner.update({
                 where: {
@@ -72,7 +71,7 @@ export const partnersRouter = router({
                     name: input.name,
                     surname: input.surname,
                     code: input.code,
-                    birthdate: new Date(input.birthdate).toISOString(),
+                    birthdate: input.birthdate ? new Date(input.birthdate).toISOString() : null,
                     email: input.email,
                     phone: input.phone,
                     notes: input.notes,

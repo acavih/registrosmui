@@ -5,6 +5,10 @@ import bcrypt from 'bcryptjs'
 import { TRPCError } from "@trpc/server";
 
 export const loginRouter = router({
+    greet: publicProcedure.query(() => {
+        console.log('Hola desde el servidor')
+        return 'hola'
+    }),
     login: publicProcedure.input(
         z.object({
             username: z.string(),

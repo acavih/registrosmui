@@ -27,10 +27,10 @@ model Partner {
   surname         String
   email           String
   phone           String
-  notes           String
+  notes           String  @db.LongText
   sipcard         String
-  birthdate       DateTime
-  pendent         String
+  birthdate       DateTime?
+  pendent         String  @db.LongText
   sex             Sex           @relation(fields: [sexId], references: [id])
   partnerState    PartnerState  @relation(fields: [partnerStateId], references: [id])
   nationality     Nationality   @relation(fields: [nationalityId], references: [id])
@@ -98,10 +98,11 @@ model YearDidKnowus {
 
 model Attention {
   id                String              @id @default(uuid())
-  note              String
+  note              String @db.LongText
   date              DateTime
-  pendent           DateTime
-  partner           Partner             @relation(fields: [partnerId], references: [id])
+  pendent String @db.LongText
+  pendentDate           DateTime?
+  partner           Partner             @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   archived          Boolean             @default(false)
   partnerId         String
   TypeAttentions    TypeAttentions[]

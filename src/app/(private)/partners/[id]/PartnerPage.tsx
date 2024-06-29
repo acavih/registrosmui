@@ -1,8 +1,11 @@
 "use client"
 import { Box, Card, CardContent, CardHeader, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import EditPartnerButton from "./EditPartnerButton";
+import calcularEdad from "@/utils/calcularEdad";
+import dayjs from "dayjs";
+import AttentionsSection from "./attentions";
 
-export default function PartnerPage({data}) {
+export default function PartnerPage({data, attentions, partnerId}) {
     return (
         <Box>
             <Stack direction={'column'} spacing={2}>
@@ -16,51 +19,51 @@ export default function PartnerPage({data}) {
                     <Table>
                         <TableBody>
                             <TableRow>
-                                <TableCell component={"th"}>
-                                    <Typography variant="body1" color="initial">Tarjeta SIP</Typography>
+                                <TableCell width={'180px'} component={"th"}>
+                                    <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Tarjeta SIP</Typography>
                                 </TableCell>
                                 <TableCell>
                                     <Typography variant="body1" color="initial">{data.sipcard}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>
-                                    <Typography variant="body1" color="initial">Sexo</Typography>
+                                <TableCell width={'180px'}>
+                                    <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Sexo</Typography>
                                 </TableCell>
                                 <TableCell>
                                     <Typography variant="body1" color="initial">{data.sex.name}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>
-                                    <Typography variant="body1" color="initial">Nacionalidad</Typography>
+                                <TableCell width={'180px'}>
+                                    <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Nacionalidad</Typography>
                                 </TableCell>
                                 <TableCell>
                                     <Typography variant="body1" color="initial">{data.nationality.name}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>
-                                    <Typography variant="body1" color="initial">Residencia</Typography>
+                                <TableCell width={'180px'}>
+                                    <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Residencia</Typography>
                                 </TableCell>
                                 <TableCell>
                                     <Typography variant="body1" color="initial">{data.residency.name}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>
-                                    <Typography variant="body1" color="initial">Estado</Typography>
+                                <TableCell width={'180px'}>
+                                    <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Estado</Typography>
                                 </TableCell>
                                 <TableCell>
                                     <Typography variant="body1" color="initial">{data.partnerState.name}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>
-                                    <Typography variant="body1" color="initial">Fecha de nacimiento</Typography>
+                                <TableCell width={'180px'}>
+                                    <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Fecha de nacimiento</Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography variant="body1" color="initial">{data.birthdate.toLocaleDateString()}</Typography>
+                                    <Typography variant="body1" color="initial">{dayjs(data.birthdate).format('DD/MM/YYYY')} ({calcularEdad(new Date(data.birthdate))} años)</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -78,6 +81,7 @@ export default function PartnerPage({data}) {
                         <Typography variant="body1" color="initial">{data.pendent}</Typography>
                     </CardContent>
                 </Card>
+                <AttentionsSection partnerId={partnerId} attentions={attentions} />
             </Stack>
         </Box>
     )
