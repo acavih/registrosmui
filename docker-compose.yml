@@ -1,15 +1,6 @@
 version: 'versions: [ "3.9" ]'
 
 services:
-  app:
-    build:
-      context: .
-      target: dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
   mysql:
     image: mysql:8.0
     ports:

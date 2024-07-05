@@ -39,7 +39,7 @@ export default function MyDrawer({open}) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
-                        <ListItemButton component={Link} href="/partners" >
+                        <ListItemButton component={Link} href="/stats" >
                             <ListItemText primary="Estadísticas" />
                         </ListItemButton>
                     </ListItem>

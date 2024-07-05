@@ -61,7 +61,7 @@ export default function EditPartnerButton({ partner }) {
             sipcard: partner.sipcard,
             notes: partner.notes,
             pendent: partner.pendent,
-            birthdate: partner.birthdate.toLocaleDateString(),
+            birthdate: partner.birthdate?.toLocaleDateString(),
             sex: partner.sex.name,
             nationality: partner.nationality.name,
             residency: partner.residency.name,

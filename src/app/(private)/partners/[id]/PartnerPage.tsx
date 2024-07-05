@@ -63,7 +63,13 @@ export default function PartnerPage({data, attentions, partnerId}) {
                                     <Typography variant="body1" sx={{fontWeight: 'bold'}} color="initial">Fecha de nacimiento</Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography variant="body1" color="initial">{dayjs(data.birthdate).format('DD/MM/YYYY')} ({calcularEdad(new Date(data.birthdate))} años)</Typography>
+                                    <Typography variant="body1" color="initial">
+                                        {data.birthdate ? (
+                                            <span>
+                                                {dayjs(data.birthdate).format('DD/MM/YYYY')} ({calcularEdad(new Date(data.birthdate))} años)
+                                            </span>
+                                        ) : 'N/A'}
+                                    </Typography>
                                 </TableCell>
                             </TableRow>
                         </TableBody>

@@ -8,8 +8,8 @@
 
 *.json
 
-.env
-docker
+.env*
+docker*
 
 # testing
 /coverage
