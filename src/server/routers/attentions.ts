@@ -1,5 +1,5 @@
 import { prismaClient } from "@/utils/prismaClient";
-import { publicProcedure, router } from "../trpc";
+import { privateProcedure,  router } from "../trpc";
 import { z } from "zod";
 import bcrypt from 'bcryptjs'
 import { TRPCError } from "@trpc/server";
@@ -16,7 +16,7 @@ const attentionValidator = z.object({
 })
 
 export const attentionsRouter = router({
-    createAttention: publicProcedure.input(attentionValidator).mutation(async ({ input }) => {
+    createAttention: privateProcedure.input(attentionValidator).mutation(async ({ input }) => {
         try {
             console.log(input.date, input.pendent)
             const attention = await prismaClient.attention.create({

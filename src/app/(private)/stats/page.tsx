@@ -1,39 +1,32 @@
-import { prismaClient } from "@/utils/prismaClient"
-import _ from 'lodash'
+"use client"
+
+import { trpcClient } from "@/app/_trpc/client"
+import { useState } from "react"
 import StatsPage from "./StatsPage"
-import { redirect } from "next/navigation"
 
-const currentYear = new Date().getFullYear()
+export default function Page () {
+    const [firstDate, setFirstDate] = useState('2024-01-01')
+    const [secondDate, setSecondDate] = useState('2024-12-31')
 
-export default async function Page({searchParams: {firstDate, lastDate}}) {
-    if (!firstDate || !lastDate) {
-        redirect('/stats?firstDate=' + currentYear + '-01-01&lastDate=' + (currentYear + 1) + '-01-01')
-    }
-
-    console.log('REFRESCANDO', firstDate, lastDate)
-
-    const attentions = await prismaClient.attention.findMany({
-        where: {
-            date: {
-                gte: new Date(firstDate),
-                lt: new Date(lastDate)
-            }
-        },
-        include: {
-            TypeAttentions: true,
-            PlaceAttention: true,
-            Projects: true,
-            AttentionsReasons: true,
-            DerivedFrom: true,
-            DerivedTo: true,
-            Formation: true,
-            Volunteer: true,
-            partner: true
+    const stats = trpcClient.stats.getStats.useQuery({firstDate, lastDate: secondDate}, {
+        initialData: {
+            partners: [],
+            attentions: []
         }
     })
-    const partners = _.uniqBy(attentions.map(a => a.partner), 'id')
-    console.log(partners.length, attentions.length)
+
+    function refresh(firstDate: string, secondDate: string) {
+        setFirstDate(firstDate)
+        setSecondDate(secondDate)
+        // stats.refetch()
+    }
+
+    console.log(stats.data)
+
     return (
-        <StatsPage {...{partners, attentions}} />
+        <>
+            {stats.isLoading && <p>Cargando...</p>}
+            {!stats.isLoading && <StatsPage fd={firstDate} sd={secondDate} partners={stats.data.partners} attentions={stats.data.attentions} refresh={refresh}  />}
+        </>
     )
 }

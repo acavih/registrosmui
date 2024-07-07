@@ -1,97 +1,30 @@
-import { Box, Grid, IconButton, Stack } from "@mui/material";
-import { PieChart } from "@mui/x-charts";
-import { useRef } from "react";
-import html2canvas from 'html2canvas';
-import { CopyAll } from "@mui/icons-material";
+import { Grid } from "@mui/material";
+import BarGraph from "./Graphs/BarGraph";
+import PieGraph from "./Graphs/PieGraph";
+import { getDataForChart } from "./utils";
 
-const bounds = {
-    width: 300,
-    height: 160,
-};
-
-function GraphWrapper({ children }) {
-    const ref = useRef()
-
-    async function copy() {
-        async () => {
-            const elToCanvas = await html2canvas(ref.current!)
-            await elToCanvas.toBlob(async (blob) => {
-                await navigator.clipboard.write([
-                    new ClipboardItem(Object.defineProperty({}, blob!.type, {
-                        value: blob,
-                        enumerable: true
-                    }))
-                ])
-                alert('copiado')
-            })
-        }
-    }
-
-    return (
-        <Box>
-            <Stack direction={'row-reverse'} spacing={2}>
-                <IconButton onClick={copy}>
-                    <CopyAll />
-                </IconButton>
-            </Stack>
-            <Box ref={ref}>
-                {children}
-            </Box>
-        </Box>
-    );
-}
-
-export default function StatsGraphs() {
+export default function StatsGraphs({filteredPartners}) {
     return (
         <Grid container spacing={2}>
-            <Grid item xs={4}>
-                <GraphWrapper>
-                    <PieChart
-                        series={[
-                            {
-                                data: [
-                                    { id: 0, value: 10, label: 'series A' },
-                                    { id: 1, value: 15, label: 'series B' },
-                                    { id: 2, value: 20, label: 'series C' },
-                                ],
-                            },
-                        ]}
-                        {...bounds}
-                    />
-                </GraphWrapper>
-            </Grid>
-            <Grid item xs={4}>
-                <GraphWrapper>
-                    <PieChart
-                        series={[
-                            {
-                                data: [
-                                    { id: 0, value: 10, label: 'series A' },
-                                    { id: 1, value: 15, label: 'series B' },
-                                    { id: 2, value: 20, label: 'series C' },
-                                ],
-                            },
-                        ]}
-                        {...bounds}
-                    />
-                </GraphWrapper>
-            </Grid>
-            <Grid item xs={4}>
-                <GraphWrapper>
-                    <PieChart
-                        series={[
-                            {
-                                data: [
-                                    { id: 0, value: 10, label: 'series A' },
-                                    { id: 1, value: 15, label: 'series B' },
-                                    { id: 2, value: 20, label: 'series C' },
-                                ],
-                            },
-                        ]}
-                        {...bounds}
-                    />
-                </GraphWrapper>
-            </Grid>
+            {getCharts(filteredPartners)}
         </Grid>
     )
+}
+
+const keyOfSinglePartners = (partners, key) => getDataForChart(
+    partners.reduce((acc, partner) => {
+    acc[partner[key].name] = (acc[partner[key].name] || 0) + 1
+    return acc
+}, {})
+)
+
+function getCharts(partners) {
+    return [
+        <PieGraph key={'sexoschart'} title={'Sexos'} data={keyOfSinglePartners(partners, 'sex')} />,
+        <PieGraph key={'partnerState'} title={'Socio o no'} data={keyOfSinglePartners(partners, 'partnerState')} />,
+        <PieGraph key={'howDidKnowus'} title={'Como nos conoció'} data={keyOfSinglePartners(partners, 'howDidKnowus')} />,
+        <PieGraph key={'yearDidKnowUs'} title={'Año en que nos conoció'} data={keyOfSinglePartners(partners, 'yearDidKnowUs')} />,
+        <BarGraph columns={12} key={'nationality'} title={'Nacionalidad'} data={keyOfSinglePartners(partners, 'nationality')} />,
+        <BarGraph columns={12} key={'residency'} title={'Residencia'} data={keyOfSinglePartners(partners, 'residency')} />,
+    ]
 }
