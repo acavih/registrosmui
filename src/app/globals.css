@@ -6,6 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.canvasjs-chart-container>canvas:first-of-type { position: relative !important; }
+
+
 /*@tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -21,8 +21,6 @@ export default function Page () {
         // stats.refetch()
     }
 
-    console.log(stats.data)
-
     return (
         <>
             {stats.isLoading && <p>Cargando...</p>}

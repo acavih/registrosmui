@@ -1,49 +1,50 @@
-import Chart from 'chart.js/auto'
 import { Grid } from "@mui/material";
-import { useEffect, useRef } from "react";
-import { ChartConfiguration } from "chart.js";
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
-export default function PieGraph({ data, columns = 6, title }) {
-    const graphContainer = useRef<any>()
+const RADIAN = Math.PI / 180;
 
-    const config: ChartConfiguration = {
-        type: 'pie',
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    text: title
-                },
-                legend: {
-                    display: true
-                }
-            }
-        },
-        data: {
-            labels: Object.keys(data),
-            datasets: [{
-                label: title,
-                data: Object.values(data),
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ]
-            }]
-        }
-    }
-    console.log(title, config)
+const data = [
+    { name: 'Group A', value: 400 },
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 300 },
+    { name: 'Group D', value: 200 },
+  ];
 
-    useEffect(() => {
-        if (!graphContainer.current) return
-        console.log('montando el grafico', data)
-        const chart =  new Chart(graphContainer.current, config)
-        return () => chart.destroy()
-    }, [data, title])
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
+        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+            {`${(percent * 100).toFixed(0)}%`}
+        </text>
+    );
+};
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+export default function PieGraph({ data: ssd, columns = 6, title }) {
+    return (
         <Grid item xs={columns}>
-            <canvas width={400} height={400} ref={graphContainer}></canvas>
+            <p>holaa</p>
+            <ResponsiveContainer width="100%" height="500px">
+                <PieChart width={400} height={400}>
+                    <Pie
+                        data={data}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={renderCustomizedLabel}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                    >
+                        {data.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                </PieChart>
+            </ResponsiveContainer>
         </Grid>
     )
 }

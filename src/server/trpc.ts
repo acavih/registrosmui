@@ -1,6 +1,7 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 import { CreateTRPCContextType } from "./createTRPCContext";
 import { getServerSession } from "next-auth";
+import { prismaClient } from "@/utils/prismaClient";
 
 const t = initTRPC.context<CreateTRPCContextType>().create();
 
