@@ -16,7 +16,6 @@ export default function GraphWrapper({ children, title = 'Gráfica sin título' 
                     enumerable: true
                 }))
             ])
-            alert('copiado')
         })
     }
 
@@ -29,10 +28,9 @@ export default function GraphWrapper({ children, title = 'Gráfica sin título' 
             </Stack>
             <Box ref={ref}>
                 <Stack direction={'column'} spacing={2}>
-                    <Typography variant="h5" align="center" color="initial">
-                        {title}
-                    </Typography>
-                    {children}
+                    <Box>
+                        {children}
+                    </Box>
                 </Stack>
             </Box>
         </Box>

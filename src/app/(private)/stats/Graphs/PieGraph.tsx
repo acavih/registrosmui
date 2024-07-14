@@ -1,50 +1,68 @@
 import { Grid } from "@mui/material";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from 'highcharts'
+import GraphWrapper from "../GraphWrapper";
 
-const RADIAN = Math.PI / 180;
+function getData (data) {
+    const arr: any[] = []
 
-const data = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
-  ];
+    for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+            const element = data[key];
+            arr.push({ name: key, y: element })
+        }
+    }
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    return arr
+}
 
-    return (
-        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-            {`${(percent * 100).toFixed(0)}%`}
-        </text>
-    );
-};
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-export default function PieGraph({ data: ssd, columns = 6, title }) {
+export default function PieGraph({ data, columns = 6, title }) {
     return (
         <Grid item xs={columns}>
-            <p>holaa</p>
-            <ResponsiveContainer width="100%" height="500px">
-                <PieChart width={400} height={400}>
-                    <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={renderCustomizedLabel}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                    >
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+            <GraphWrapper>
+                <HighchartsReact highcharts={Highcharts} options={{
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: title
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        series: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: [{
+                                enabled: true,
+                                distance: 20
+                            }, {
+                                enabled: true,
+                                distance: -40,
+                                format: '{point.percentage:.1f}%',
+                                style: {
+                                    fontSize: '1.2em',
+                                    textOutline: 'none',
+                                    opacity: 0.7
+                                },
+                                filter: {
+                                    operator: '>',
+                                    property: 'percentage',
+                                    value: 10
+                                }
+                            }]
+                        }
+                    },
+                    series: [
+                        {
+                            name: '',
+                            colorByPoint: true,
+                            data: getData(data)
+                        }
+                    ]
+                }} />
+            </GraphWrapper>
         </Grid>
     )
 }

@@ -1,13 +1,8 @@
 import data from './data.json'
-import { appRouter } from "./server";
 import { connectOrCreateResource, connectOrCreateResourceMultiple, connectOrCreateResourceMultipleee } from './server/utils/prismaUtils';
 import { prismaClient } from './utils/prismaClient';
 
 const regs = data as any
-
-const caller = appRouter.createCaller({
-    user: {id: 200999000999, name: 'test'}
-})
 
 async function main () {
     try {

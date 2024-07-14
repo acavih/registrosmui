@@ -21,6 +21,8 @@ export default function Page () {
         // stats.refetch()
     }
 
+    // console.log('tipos de atenciones', getMultipleResourceStats('TypeAttentions', stats.data.attentions))
+
     return (
         <>
             {stats.isLoading && <p>Cargando...</p>}

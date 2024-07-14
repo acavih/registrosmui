@@ -17,6 +17,11 @@ export const statsRouter = router({
                     date: {
                         gte: new Date(firstDate),
                         lt: new Date(lastDate)
+                    },
+                    Projects: {
+                        some: {
+                            name: 'Entre pares'
+                        }
                     }
                 },
                 include: {

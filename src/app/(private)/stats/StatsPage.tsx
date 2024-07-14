@@ -24,7 +24,7 @@ export default function StatsPage({partners, attentions, refresh, fd, sd}) {
                     <Stack spacing={2}>
                         <StatsDateFilter fd={fd} sd={sd} refresh={refresh} />
                         {
-                            <StatsGraphs filteredPartners={filteredPartners} />}
+                            <StatsGraphs filteredPartners={filteredPartners} filteredAttentions={filteredAttentions} />}
                     </Stack>
                 </Grid>
                 <Grid item xs={3}>
