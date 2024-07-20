@@ -20,7 +20,7 @@ export const statsRouter = router({
                     },
                     Projects: {
                         some: {
-                            name: 'Entre pares'
+                            name: 'Voluntariado'
                         }
                     }
                 },

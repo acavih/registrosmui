@@ -5,10 +5,11 @@ type ResourceProps = {
     resourceName: string
     multiple?: boolean,
     initialValue?: string
-    onChange: (value: string) => void
+    label?: string
+    onChange: (value: string[]) => void
 }
 
-export default function ResourceInputMultiple({multiple = false, resourceName, onChange, initialValue, ...other}: ResourceProps) {
+export default function ResourceInputMultiple({multiple = false, resourceName, onChange, initialValue, label, ...other}: ResourceProps) {
     const {data: resources = [], isLoading} = trpcClient.resources.get.useQuery<any[]>({name: resourceName as any})
 
     return (
@@ -16,7 +17,7 @@ export default function ResourceInputMultiple({multiple = false, resourceName, o
             loading={isLoading} disabled={isLoading}
             multiple={multiple} options={resources}
             getOptionLabel={(option) => option.name}
-            renderInput={(params) => (<TextField {...params} label={resourceName} />)}
+            renderInput={(params) => (<TextField {...params} label={label ?? resourceName} />)}
             defaultValue={resources.find((resource) => resource.name === initialValue)}
             onChange={(_, value: any) => {
                 //alert(value.id)

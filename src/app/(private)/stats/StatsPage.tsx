@@ -12,9 +12,15 @@ export default function StatsPage({partners, attentions, refresh, fd, sd}) {
     const [filteredPartners, setFilteredPartners] = useState<any[]>([])
     
     useEffect(() => {
+        console.log('poniendo atenciones de db')
         setFilteredAttentions(attentions)
         setFilteredPartners(partners)
     }, [partners, attentions])
+
+    useEffect(() => {
+        console.log('atentions', filteredAttentions.length)
+        console.log('partners', filteredPartners.length)
+    }, [filteredAttentions, filteredPartners])
 
     return (
         <Box>
@@ -28,7 +34,7 @@ export default function StatsPage({partners, attentions, refresh, fd, sd}) {
                     </Stack>
                 </Grid>
                 <Grid item xs={3}>
-                    <StatsFilter />
+                    <StatsFilter attentions={attentions} setAttentions={setFilteredAttentions} setPartners={setFilteredPartners} />
                 </Grid>
             </Grid>
         </Box>

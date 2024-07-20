@@ -12,7 +12,8 @@ export default function Page () {
         initialData: {
             partners: [],
             attentions: []
-        }
+        },
+        refetchOnWindowFocus: false
     })
 
     function refresh(firstDate: string, secondDate: string) {

@@ -7,7 +7,8 @@ export const ResourcesRouter = router({
         z.object({
             name: z.enum([
                 'sex', 'nationalities', 'residencies', 'partnerstates', 'howdidknowus', 'yeardidknowus',
-                'typeattentions', 'placeattentions'
+                'typeattentions', 'placeattentions', 'derivedto', 'derivedfrom', 'formation',
+                'attentionsreasons', 'volunteer', 'projects'
             ])
         })
     ).query(async ({ input }) => {
