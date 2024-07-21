@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -27,10 +27,10 @@ model Partner {
   surname         String
   email           String
   phone           String
-  notes           String  @db.LongText
+  notes           String  @db.Text
   sipcard         String
   birthdate       DateTime?
-  pendent         String  @db.LongText
+  pendent         String  @db.Text
   sex             Sex           @relation(fields: [sexId], references: [id])
   partnerState    PartnerState  @relation(fields: [partnerStateId], references: [id])
   nationality     Nationality   @relation(fields: [nationalityId], references: [id])
@@ -98,9 +98,9 @@ model YearDidKnowus {
 
 model Attention {
   id                String              @id @default(uuid())
-  note              String @db.LongText
+  note              String @db.Text
   date              DateTime
-  pendent String @db.LongText
+  pendent String @db.Text
   pendentDate           DateTime?
   partner           Partner             @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   archived          Boolean             @default(false)

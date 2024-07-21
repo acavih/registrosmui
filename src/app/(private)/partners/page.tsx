@@ -8,15 +8,12 @@ export const metadata = {
 
 export default async function Page({searchParams: {search = ''}}) {
     const searchLike = '%' + search.replace(/\s+/g, '%') + '%'
-    console.log(searchLike)
-
     const partners = await prismaClient.$queryRaw`
         SELECT p.*, s.name as sex FROM partners p
-        JOIN resources_sex s on p.sexId = s.id
+        JOIN resources_sex s on "sexId" = s.id
         WHERE CONCAT(p.name, ' ', p.surname, ' ', p.email, ' ', p.phone) LIKE ${searchLike}
         LIMIT 20
     `
-    
     return (
         <PartnersPage {...{partners, searchQuery: search}} />
     )
