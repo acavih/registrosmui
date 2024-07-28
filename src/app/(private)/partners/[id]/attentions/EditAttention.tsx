@@ -1,18 +1,12 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useRouter } from 'next/navigation';
-import { Card, CardActions, CardContent, Grid } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
-import { DatePicker } from '@mui/x-date-pickers';
-import ResourceInput from '@/components/ResourceInput';
-import ResourceInputMultiple from '@/components/ResourceInputMultiple';
-import { trpcClient } from '@/app/_trpc/client';
+import { trpcClient } from "@/app/_trpc/client";
+import ResourceInput from "@/components/ResourceInput";
+import ResourceInputMultiple from "@/components/ResourceInputMultiple";
+import { Dialog, DialogContent, DialogTitle, Button, DialogActions, Grid, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
     note: string
@@ -29,18 +23,14 @@ type Inputs = {
     volunteer: string[]
 }
 
-export default function AddAttention({ partnerId }) {
-    const [open, setOpen] = React.useState(false)
-    const handleClickOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+export default function EditAttention({attention}: {attention: Inputs & {partner: {name: string, surname: string}}}) {
+    const editAttention = trpcClient.attentions.editAttention.useMutation()
+    const [active, setActive] = useState(false)
 
-    const addAttention = trpcClient.attentions.createAttention.useMutation({
-        onSuccess() {
-            router.refresh()
-            console.log('submit')
-            handleClose()
-        }
-    })
+    const handleClose = () => {
+        setActive(false)
+    }
+
     const router = useRouter()
     const {
         register,
@@ -49,29 +39,32 @@ export default function AddAttention({ partnerId }) {
     } = useForm<Inputs>()
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        addAttention.mutate({
+        editAttention.mutate({
             ...data,
-            partnerId
         })
     }
 
+    useEffect(() => {
+        setValue('note', attention.note)
+    }, [attention])
+
     return (
-        <React.Fragment>
-            <Button variant="contained" onClick={handleClickOpen}>
-                Añadir atención
+        <>
+            <Button variant="contained" color="primary" onClick={() => setActive(true)}>
+                Editar atención
             </Button>
             <Dialog
                 fullWidth={true}
-                open={open}
+                open={active}
                 onClose={handleClose}
                 PaperProps={{
                     component: 'form',
                     onSubmit: handleSubmit(onSubmit),
                 }}
             >
-                <DialogTitle>Añadir atención</DialogTitle>
+                <DialogTitle>Editar atención ({attention.partner.name} {attention.partner.surname})</DialogTitle>
                 <DialogContent>
-                    <Grid container spacing={2}>
+                <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField multiline label="Observaciones" {...register('note')} />
                         </Grid>
@@ -116,50 +109,9 @@ export default function AddAttention({ partnerId }) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button disabled={addAttention.isLoading} type="submit" variant='contained'>Crear atención</Button>
+                    <Button disabled={editAttention.isLoading} type="submit" variant='contained'>Guardar cambios</Button>
                 </DialogActions>
             </Dialog>
-        </React.Fragment>
-    )
+        </>
+    );
 }
-
-/*
-function AddAttentionForm({ handleClose, partnerId }) {
-    
-
-    return (
-        <Card component={'form'} method="post" elevation={0} onSubmit={handleSubmit(onSubmit)}>
-            <CardContent>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextField multiline label="Observaciones" {...register('note')} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField multiline label="Cosas pendientes" {...register('pendent')} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <DatePicker
-                            onChange={(v) => setValue("date", dayjs(v).format('YYYY/MM/DD'))}
-                            label="Fecha de atención" />
-                    </Grid>
-                    {/* <Grid item xs={12}>
-                        <DatePicker
-                            onChange={(v) => setValue("pendent", dayjs(v).format('YYYY/MM/DD'))}
-                            label="Pendiente" />
-                    </Grid> }
-                    <Grid item xs={12}>
-                        <ResourceInputMultiple multiple={true} resourceName='typeattentions' onChange={(v: any) => setValue("typeAttentions", v)} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ResourceInput resourceName='placeattentions' onChange={(v) => setValue("placeAttention", v)} />
-                    </Grid>
-                </Grid>
-            </CardContent>
-            <CardActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button type="submit">Añadir atención</Button>
-            </CardActions>
-        </Card>
-    )
-}
-*/

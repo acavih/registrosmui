@@ -1,5 +1,6 @@
 import { Typography, Card, CardHeader, CardContent, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import dayjs from "dayjs";
+import EditAttention from "./EditAttention";
 
 /**
  * TypeAttentions: true,
@@ -18,16 +19,19 @@ const resources = [
     {label: 'Motivos de atencion', resource: 'AttentionsReasons'},
     {label: 'Formacion', resource: 'Formation'},
     {label: 'Voluntariado', resource: 'Volunteer'},
-    {label: 'Formacion derivada', resource: 'DerivedFrom'},
-    {label: 'Voluntariado derivado', resource: 'DerivedTo'},
+    {label: 'Derivado de', resource: 'DerivedFrom'},
+    {label: 'Derivado a', resource: 'DerivedTo'},
 ]
 
 export function AttentionCard({ attention }) {
     return (
         <Card>
-            <CardHeader
-                title={dayjs(attention.date).format('DD/MM/YYYY')} />
+            <CardHeader title={dayjs(attention.date).format('DD/MM/YYYY')} />
             <CardContent>
+                <EditAttention attention={attention} />
+                {attention.pendent && <Typography variant="body2" color="text.secondary">
+                    {attention.pendent} {dayjs(attention.pendentDate).format('DD/MM/YYYY')}
+                    </Typography>}
                 <Typography variant="body2" color="text.secondary">
                     {attention.note}
                 </Typography>

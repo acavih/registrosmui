@@ -23,7 +23,8 @@ export default async function Page({params}) {
           DerivedFrom: true,
           DerivedTo: true,
           Formation: true,
-          Volunteer: true
+          Volunteer: true,
+          partner: true
       }
   })
   console.log('DATAAA', data)
