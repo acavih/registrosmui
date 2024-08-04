@@ -12,6 +12,23 @@ const attentionValidator = z.object({
     date: z.string(),
     pendent: z.string(),
     pendentDate: z.string(),
+    PlaceAttention: z.string(),
+    TypeAttentions: z.array(z.string()),
+    Projects: z.array(z.string()),
+    AttentionsReasons: z.array(z.string()),
+    DerivedTo: z.array(z.string()),
+    DerivedFrom: z.array(z.string()),
+    Formation: z.array(z.string()),
+    Volunteer: z.array(z.string()),
+    partnerId: z.string().optional()
+})
+
+const attentionValidatorOld = z.object({
+    id: z.string().optional(),
+    note: z.string(),
+    date: z.string(),
+    pendent: z.string(),
+    pendentDate: z.string(),
     placeAttention: z.string(),
     typeAttentions: z.array(z.string()),
     projects: z.array(z.string()),
@@ -24,7 +41,7 @@ const attentionValidator = z.object({
 })
 
 export const attentionsRouter = router({
-    createAttention: privateProcedure.input(attentionValidator).mutation(async ({ input }) => {
+    createAttention: privateProcedure.input(attentionValidatorOld).mutation(async ({ input }) => {
         try {
             console.log(input.date, input.pendent)
             const attention = await prismaClient.attention.create({
@@ -84,28 +101,28 @@ export const attentionsRouter = router({
                     pendent: input.pendent,
                     pendentDate: new Date(input.pendentDate).toISOString(),
                     PlaceAttention: {
-                        connectOrCreate: connectOrCreateResource(input.placeAttention)
+                        connectOrCreate: connectOrCreateResource(input.PlaceAttention)
                     },
                     TypeAttentions: {
-                        connectOrCreate: input.typeAttentions.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.TypeAttentions.map(connectOrCreateResourceMultiple)
                     },
                     Projects: {
-                        connectOrCreate: input.projects.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.Projects.map(connectOrCreateResourceMultiple)
                     },
                     AttentionsReasons: {
-                        connectOrCreate: input.attentionsReasons.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.AttentionsReasons.map(connectOrCreateResourceMultiple)
                     },
                     DerivedTo: {
-                        connectOrCreate: input.derivedTo.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.DerivedTo.map(connectOrCreateResourceMultiple)
                     },
                     DerivedFrom: {
-                        connectOrCreate: input.derivedFrom.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.DerivedFrom.map(connectOrCreateResourceMultiple)
                     },
                     Formation: {
-                        connectOrCreate: input.formation.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.Formation.map(connectOrCreateResourceMultiple)
                     },
                     Volunteer: {
-                        connectOrCreate: input.volunteer.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: input.Volunteer.map(connectOrCreateResourceMultiple)
                     }
                 }
             })

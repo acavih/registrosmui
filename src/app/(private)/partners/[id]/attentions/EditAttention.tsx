@@ -13,40 +13,53 @@ type Inputs = {
     date: string
     pendent: string
     pendentDate: string
-    placeAttention: string
-    typeAttentions: string[]
-    projects: string[]
-    attentionsReasons: string[]
-    derivedTo: string[]
-    derivedFrom: string[]
-    formation: string[]
-    volunteer: string[]
+    PlaceAttention: string
+    TypeAttentions: string[]
+    Projects: string[]
+    AttentionsReasons: string[]
+    DerivedTo: string[]
+    DerivedFrom: string[]
+    Formation: string[]
+    Volunteer: string[]
 }
 
-export default function EditAttention({attention}: {attention: Inputs & {partner: {name: string, surname: string}}}) {
+export default function EditAttention({attention}) {
     const editAttention = trpcClient.attentions.editAttention.useMutation()
     const [active, setActive] = useState(false)
 
     const handleClose = () => {
         setActive(false)
     }
+    console.log(attention)
 
     const router = useRouter()
     const {
         register,
         handleSubmit,
         setValue
-    } = useForm<Inputs>()
+    } = useForm<Inputs>({
+        defaultValues: {
+            note: attention.note,
+            /*date: attention.date,
+            pendent: attention.pendent,
+            pendentDate: attention.pendentDate,*/
+            PlaceAttention: attention.PlaceAttention.name,
+            /*TypeAttentions: attention.TypeAttentions,
+            Projects: attention.Projects,
+            AttentionsReasons: attention.AttentionsReasons,
+            DerivedTo: attention.DerivedTo,
+            DerivedFrom: attention.DerivedFrom,
+            Formation: attention.Formation,
+            Volunteer: attention.Volunteer*/
+        }
+    })
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        editAttention.mutate({
+        console.log('RESULT', data)
+        /*editAttention.mutate({
             ...data,
-        })
+        })*/
     }
-
-    useEffect(() => {
-        setValue('note', attention.note)
-    }, [attention])
 
     return (
         <>
@@ -66,6 +79,9 @@ export default function EditAttention({attention}: {attention: Inputs & {partner
                 <DialogContent>
                 <Grid container spacing={2}>
                         <Grid item xs={12}>
+                            <ResourceInput label="Lugar de atención" resourceName='placeattentions' onChange={(v) => setValue("PlaceAttention", v)} initialValue={attention.PlaceAttention.name} />
+                        </Grid>
+                        <Grid item xs={12}>
                             <TextField multiline label="Observaciones" {...register('note')} />
                         </Grid>
                         <Grid item xs={12}>
@@ -81,29 +97,27 @@ export default function EditAttention({attention}: {attention: Inputs & {partner
                                 onChange={(v) => setValue("pendentDate", dayjs(v).format('YYYY/MM/DD'))}
                                 label="Fecha cosas pendientes" />
                         </Grid>
+                        
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='typeattentions' onChange={(v: any) => setValue("typeAttentions", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='typeattentions' onChange={(v: any) => setValue("TypeAttentions", v)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='projects' onChange={(v: any) => setValue("projects", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='projects' onChange={(v: any) => setValue("Projects", v)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='attentionsreasons' onChange={(v: any) => setValue("attentionsReasons", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='attentionsreasons' onChange={(v: any) => setValue("AttentionsReasons", v)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='derivedto' onChange={(v: any) => setValue("derivedTo", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='derivedto' onChange={(v: any) => setValue("DerivedTo", v)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='derivedfrom' onChange={(v: any) => setValue("derivedFrom", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='derivedfrom' onChange={(v: any) => setValue("DerivedFrom", v)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='formation' onChange={(v: any) => setValue("formation", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='formation' onChange={(v: any) => setValue("Formation", v)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInputMultiple multiple={true} resourceName='volunteer' onChange={(v: any) => setValue("volunteer", v)} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ResourceInput resourceName='placeattentions' onChange={(v) => setValue("placeAttention", v)} />
+                            <ResourceInputMultiple multiple={true} resourceName='volunteer' onChange={(v: any) => setValue("Volunteer", v)} />
                         </Grid>
                     </Grid>
                 </DialogContent>

@@ -13,7 +13,13 @@ export default function AttentionsSection({attentions, partnerId}) {
                     </Stack>
                 </Stack>
                 <Stack direction={'column'} spacing={2}>
-                    {attentions.map(attention => <AttentionCard key={attention.id} attention={attention} />)}
+                    {attentions.map(attention => {
+                        const a = {
+                            ...attention,
+                            PlaceAttention: attention.PlaceAttention
+                        }
+                        return <AttentionCard key={attention.id} attention={a} />
+                    })}
                 </Stack>
             </Stack>
         </Box>
