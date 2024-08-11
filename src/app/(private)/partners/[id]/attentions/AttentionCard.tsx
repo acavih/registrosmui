@@ -1,4 +1,4 @@
-import { Typography, Card, CardHeader, CardContent, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { Typography, Card, CardHeader, CardContent, List, ListItem, ListItemButton, ListItemText, Box, Alert, Stack } from "@mui/material";
 import dayjs from "dayjs";
 import EditAttention from "./EditAttention";
 
@@ -26,21 +26,25 @@ const resources = [
 export function AttentionCard({ attention }) {
     return (
         <Card>
-            <CardHeader title={dayjs(attention.date).format('DD/MM/YYYY')} />
+            <CardHeader title={
+                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                    <span>{dayjs(attention.date).format('DD/MM/YYYY')}</span>
+                    <EditAttention attention={attention} />
+                </Box>
+            } />
             <CardContent>
-                <EditAttention attention={attention} />
-                {attention.pendent && <Typography variant="body2" color="text.secondary">
-                    {attention.pendent} {dayjs(attention.pendentDate).format('DD/MM/YYYY')}
-                    </Typography>}
-                <Typography variant="body2" color="text.secondary">
-                    {attention.note}
-                </Typography>
+                <Stack direction={'column'} gap={1}>
+                    {attention.pendent && (<Alert severity="info">{attention.pendent} {dayjs(attention.pendentDate).format('DD/MM/YYYY')}</Alert>)}
+                    {attention.note && (<Alert severity="info">{attention.note}</Alert>)}
+                </Stack>
                 <List>
-                    {resources.filter(r => attention[r.resource].length > 0) .map(r => <ListItem key={r.resource}>
-                        <ListItemButton>
-                            <ListItemText primary={r.label} secondary={attention[r.resource].map(type => type.name).join(', ')} />
-                        </ListItemButton>
-                    </ListItem>)}
+                    {resources.filter(r => attention[r.resource].length > 0).map(r => (
+                        <ListItem key={r.resource}>
+                            <ListItemButton>
+                                <ListItemText primary={r.label} secondary={attention[r.resource].map(type => type.name).join(', ')} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
                 </List>
             </CardContent>
         </Card>

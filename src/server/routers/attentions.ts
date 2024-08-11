@@ -3,7 +3,7 @@ import { privateProcedure,  router } from "../trpc";
 import { z } from "zod";
 import bcrypt from 'bcryptjs'
 import { TRPCError } from "@trpc/server";
-import { connectOrCreateResource, connectOrCreateResourceMultiple } from "../utils/prismaUtils";
+import { connectOrCreateResource, connectOrCreateResourcee, connectOrCreateResourceMultiple } from "../utils/prismaUtils";
 import EditAttention from "@/app/(private)/partners/[id]/attentions/EditAttention";
 
 const attentionValidator = z.object({
@@ -12,14 +12,14 @@ const attentionValidator = z.object({
     date: z.string(),
     pendent: z.string(),
     pendentDate: z.string(),
-    PlaceAttention: z.string(),
-    TypeAttentions: z.array(z.string()),
-    Projects: z.array(z.string()),
-    AttentionsReasons: z.array(z.string()),
-    DerivedTo: z.array(z.string()),
-    DerivedFrom: z.array(z.string()),
-    Formation: z.array(z.string()),
-    Volunteer: z.array(z.string()),
+    PlaceAttention: z.any(),
+    TypeAttentions: z.any(),
+    Projects: z.any(),
+    AttentionsReasons: z.any(),
+    DerivedTo: z.any(),
+    DerivedFrom: z.any(),
+    Formation: z.any(),
+    Volunteer: z.any(),
     partnerId: z.string().optional()
 })
 
@@ -51,7 +51,7 @@ export const attentionsRouter = router({
                     pendent: input.pendent,
                     pendentDate: new Date(input.pendentDate).toISOString(),
                     PlaceAttention: {
-                        connectOrCreate: connectOrCreateResource(input.placeAttention)
+                        connectOrCreate: connectOrCreateResourcee(input.placeAttention)
                     },
                     TypeAttentions: {
                         connectOrCreate: input.typeAttentions.map(connectOrCreateResourceMultiple)
@@ -91,6 +91,7 @@ export const attentionsRouter = router({
     }),
     editAttention: privateProcedure.input(attentionValidator).mutation(async ({ input }) => {
         try {
+            console.log('INPUT', input.id)
             const attention = await prismaClient.attention.update({
                 where: {
                     id: input.id
@@ -101,29 +102,29 @@ export const attentionsRouter = router({
                     pendent: input.pendent,
                     pendentDate: new Date(input.pendentDate).toISOString(),
                     PlaceAttention: {
-                        connectOrCreate: connectOrCreateResource(input.PlaceAttention)
-                    },
-                    TypeAttentions: {
-                        connectOrCreate: input.TypeAttentions.map(connectOrCreateResourceMultiple)
-                    },
-                    Projects: {
-                        connectOrCreate: input.Projects.map(connectOrCreateResourceMultiple)
-                    },
-                    AttentionsReasons: {
-                        connectOrCreate: input.AttentionsReasons.map(connectOrCreateResourceMultiple)
-                    },
-                    DerivedTo: {
-                        connectOrCreate: input.DerivedTo.map(connectOrCreateResourceMultiple)
-                    },
-                    DerivedFrom: {
-                        connectOrCreate: input.DerivedFrom.map(connectOrCreateResourceMultiple)
+                        connectOrCreate: connectOrCreateResourcee(input.PlaceAttention)
                     },
                     Formation: {
-                        connectOrCreate: input.Formation.map(connectOrCreateResourceMultiple)
+                        set: input.Formation.map(connectOrCreateResourceMultiple)
+                    },
+                    AttentionsReasons: {
+                        set: input.AttentionsReasons.map(connectOrCreateResourceMultiple)
+                    },
+                    DerivedFrom: {
+                        set: input.DerivedFrom.map(connectOrCreateResourceMultiple)
+                    },
+                    DerivedTo: {
+                        set: input.DerivedTo.map(connectOrCreateResourceMultiple)
+                    },
+                    Projects: {
+                        set: input.Projects.map(connectOrCreateResourceMultiple)
+                    },
+                    TypeAttentions: {
+                        set: input.TypeAttentions.map(connectOrCreateResourceMultiple)
                     },
                     Volunteer: {
-                        connectOrCreate: input.Volunteer.map(connectOrCreateResourceMultiple)
-                    }
+                        set: input.Volunteer.map(connectOrCreateResourceMultiple)
+                    },
                 }
             })
             return {msg: 'Exito', data: attention}

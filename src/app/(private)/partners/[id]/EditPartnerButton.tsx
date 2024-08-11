@@ -129,7 +129,7 @@ export default function EditPartnerButton({ partner }) {
                             <TextField {...register("pendent")} multiline label="pendent" />
                         </Grid>
                         <Grid item xs={12}>
-                            <ResourceInput resourceName="sex" onChange={(v) => setValue("sex", v)} initialValue={partner.sex.name} />
+                            <ResourceInput resourceName="sex" onChange={(v) => setValue("sex", v)} initialValue={partner.sex} />
                         </Grid>
                         <Grid item xs={12}>
                             <ResourceInput resourceName="nationalities" onChange={(v) => setValue("nationality", v)} initialValue={partner.nationality.name} />

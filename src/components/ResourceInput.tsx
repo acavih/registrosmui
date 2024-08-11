@@ -1,41 +1,32 @@
 import { trpcClient } from "@/app/_trpc/client"
 import { Autocomplete, TextField } from "@mui/material"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 type ResourceProps = {
     resourceName: string
     multiple?: boolean,
     initialValue?: string
-    onChange: (value: string) => void
     label?: string
+    onChange: (value: string) => void
 }
 
-export default function ResourceInput({multiple = false, resourceName, onChange, initialValue, label = '', ...other}: ResourceProps) {
+export default function ResourceInput({label = '', multiple = false, resourceName, onChange, initialValue, ...other}: ResourceProps) {
     const {data: resources = [], isLoading} = trpcClient.resources.get.useQuery<any[]>({name: resourceName as any})
-    const inputLabel = label ?? resourceName
+    const [value, setValue] = useState(initialValue)
 
-    useEffect(() => {
-        if (!isLoading)
-            console.log('RESURCE INPUT', resourceName, initialValue, resources.find((resource) => resource.name === initialValue))
-    }, [isLoading])
-
-    if (isLoading) {
-        return (
-            <Autocomplete loading={true} disabled={true} multiple={multiple} options={[]}
-                renderInput={(params) => (<TextField {...params} label={'Cargando... ' + inputLabel} />)}
-            />
-        )
-    }
+    console.log(initialValue, resources)
 
     return (
         <Autocomplete
             loading={isLoading} disabled={isLoading}
             multiple={multiple} options={resources}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (<TextField {...params} label={inputLabel} />)}
-            defaultValue={resources.find((resource) => resource.name === initialValue)}
+            getOptionLabel={(option) => option.name ?? ''}
+            renderInput={(params) => (<TextField {...params} label={label ?? resourceName} />)}
+            value={value}
             onChange={(_, value: any) => {
                 //alert(value.id)
+                console.log('ONCHANGE', value)
+                setValue(value)
                 onChange(value.name)
             }}
         />
